@@ -14,8 +14,10 @@ func (s *HelloService) Hello(request string, reply *string) error {
 }
 
 func main() {
-	listener, _ := net.Listen("tcp", ":1234")
+	listener, _ := net.Listen("tcp", ":2234")
 	_ = rpc.RegisterName("HelloService", &HelloService{})
-	conn, _ := listener.Accept()
-	rpc.ServeConn(conn)
+	for {
+		conn, _ := listener.Accept()
+		go rpc.ServeConn(conn)
+	}
 }
